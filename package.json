@@ -7,7 +7,10 @@
   },
   "scripts": {
     "start": "node server",
-    "build": "cd client/ && npm install && npm run build"
+    "build": "cd client/ && npm install && npm run build",
+    "myServer": "nodemon run start",
+    "myClient": "cd client/ && npm start",
+    "dev": "concurrently \"npm run myServer\" \"npm run myClient\""
   },
   "cacheDirectories": [
     "node_modules",
@@ -17,6 +20,9 @@
     "express": "^4.16.4",
     "express-fileupload": "1.1.4"
   },
-  "license": "MIT",
-  "devDependencies": {}
+  "devDependencies": {
+    "concurrently": "^4.1.1",
+    "nodemon": "^1.19.1"
+  },
+  "license": "MIT"
 }
