@@ -1,0 +1,68 @@
+.legend-container {
+  max-width: 1000px;
+  width: 100%;
+  padding: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media screen and (max-width: 699px) {
+    padding: 2rem;
+  }
+
+  .legend-wrapper {
+    display: flex;
+    .legend-text {
+      color: rgb(125, 125, 125);
+      margin-left: 1.5rem;
+      display: flex;
+      align-self: center;
+    }
+
+    .agent {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: #e66565;
+    }
+
+    .goal {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: #65e698;
+    }
+
+    .path {
+      height: 4px;
+      width: 1.5rem;
+      background: rgb(57, 55, 92);
+      position: relative;
+      display: flex;
+      align-self: center;
+      justify-self: center;
+      margin-right: 1rem;
+
+      &::after {
+        content: "";
+        position: absolute;
+        display: flex;
+        align-self: center;
+        right: -1rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background: rgb(57, 55, 92);
+      }
+    }
+
+    .node {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: none;
+      border: rgb(204, 204, 204) 3px solid;
+      opacity: 0.5;
+    }
+  }
+}

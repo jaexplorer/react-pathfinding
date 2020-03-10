@@ -1,0 +1,30 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+  padding: 5rem;
+
+  @media screen and (max-width: 699px) {
+    padding: 2rem;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+@import "../scaling/scaling";
+@import "../upload/upload";
+@import "../maze/maze";
+@import "../legend/legend";
+@import "../buttons/buttons";

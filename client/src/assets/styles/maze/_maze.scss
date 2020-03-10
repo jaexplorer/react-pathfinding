@@ -1,0 +1,95 @@
+.maze-container {
+  width: calc(100% - 10rem);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+  z-index: 40;
+  padding: 5rem;
+  @media screen and (max-width: 699px) {
+    width: calc(100% - 4rem);
+    padding: 2rem;
+  }
+
+  .title {
+    margin-bottom: 2rem;
+    text-align: center;
+    h1 {
+      color: rgb(125, 125, 125);
+    }
+
+    h2 {
+      color: rgb(204, 204, 204);
+    }
+  }
+
+  .maze {
+    max-width: 1000px;
+    width: 100%;
+    padding: 5rem;
+    @media screen and (max-width: 699px) {
+      padding: 2rem;
+    }
+    height: max-content;
+    background-image: linear-gradient(to top, #fad0c4 0%, #ffd1ff 100%);
+    border-radius: 20px;
+    svg {
+      width: 100%;
+      height: 100%;
+
+      #shadows {
+        opacity: 0.6;
+        .aShadow {
+          fill: rgb(184, 181, 177);
+        }
+      }
+
+      #map {
+        .aRect {
+          fill: rgb(242, 242, 242);
+        }
+      }
+
+      .aAgent {
+        fill: #e66565;
+      }
+
+      .aGoal {
+        fill: #65e698;
+      }
+      .empty {
+        stroke: rgb(204, 204, 204);
+        stroke-width: 3;
+        fill: none;
+        opacity: 0.5;
+      }
+
+      .aPath {
+        fill: rgb(57, 55, 92);
+      }
+
+      .aLine {
+        stroke: rgb(57, 55, 92);
+        stroke-width: 6;
+      }
+    }
+  }
+}
+// WHITE: rgb(242,242,242)
+// BLUE: RGA(55,147,184)
+// PURPLE: RGB(139,109,161)
+// DARK BLUE: rgb(57,55,92)
+// PINK: rgb(230,101,155)
+
+// dark grey bg: rgb(69,88,103)
+// btn1: rgb(85,129,168)
+// btn2: rgb(224,128,88)
+// btn3: rgb(205,106,134)
+// btn4: rgb(131,102,158)
+
+// light Pink: (255,171,195)
+// light blue: (173,215,231)
+
+// dark grey: rgb(125,125,125)
+// light grey: rgb(204,204,204)
