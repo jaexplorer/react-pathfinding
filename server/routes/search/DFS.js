@@ -7,7 +7,7 @@ router.post("/", (req, res) => {
   let start = req.body.start;
   let path = [];
 
-  maze[start.y][start.x] = "Visited"; // TODO: Need to do a check if start === end
+  maze[start.y][start.x].visited = true; // TODO: Need to do a check if start === end
   path.push(start);
 
   const hasPathToEnd = node => {
@@ -26,19 +26,27 @@ router.post("/", (req, res) => {
         next.y < maze.length &&
         next.x >= 0 &&
         next.x < maze[0].length &&
-        (maze[next.y][next.x] === "Empty" || maze[next.y][next.x] === "Goal")
+        maze[next.y][next.x].visited === true
       ) {
-        if (maze[next.y][next.x] === "Goal") {
+        continue;
+      } else if (
+        next.y >= 0 &&
+        next.y < maze.length &&
+        next.x >= 0 &&
+        next.x < maze[0].length &&
+        (maze[next.y][next.x].type === "Empty" ||
+          maze[next.y][next.x].type === "Goal")
+      ) {
+        if (maze[next.y][next.x].type === "Goal") {
           path.push(next);
           return true;
         }
-        maze[next.y][next.x] = "Visited";
+        maze[next.y][next.x].visited = true;
         path.push(next);
 
         if (hasPathToEnd(next)) {
           return true;
         }
-
         path.pop();
       }
     }

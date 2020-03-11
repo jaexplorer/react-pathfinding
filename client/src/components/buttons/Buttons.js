@@ -22,6 +22,26 @@ const Buttons = ({ maze, updatePath }) => {
     }
   };
 
+  const GBFSSearch = async () => {
+    updatePath(false);
+    try {
+      const res = await axios.post("/api/search/GBFS", maze);
+      updatePath(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const ASSearch = async () => {
+    updatePath(false);
+    try {
+      const res = await axios.post("/api/search/AS", maze);
+      updatePath(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className='buttons-container'>
       <div className='button-container'>
@@ -39,12 +59,16 @@ const Buttons = ({ maze, updatePath }) => {
       </div>
 
       <div className='button-container'>
-        <div className='button'>GBFS</div>
+        <div onClick={GBFSSearch} className='button'>
+          GBFS
+        </div>
         <div className='description'>Greedy Best-First</div>
       </div>
 
       <div className='button-container'>
-        <div className='button'>AS</div>
+        <div onClick={ASSearch} className='button'>
+          AS
+        </div>
         <div className='description'>A *</div>
       </div>
     </div>

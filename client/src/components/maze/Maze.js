@@ -40,7 +40,7 @@ const Maze = ({ maze }) => {
     return maze.maze.map((row, rIndex) => {
       return row.map(
         (item, cIndex) =>
-          item !== "Wall" && (
+          item.type !== "Wall" && (
             <rect
               key={`wall - ${rIndex},${cIndex}`}
               className='aRect'
@@ -58,7 +58,7 @@ const Maze = ({ maze }) => {
     return maze.maze.map((row, rIndex) => {
       return row.map(
         (item, cIndex) =>
-          item !== "Wall" && (
+          item.type !== "Wall" && (
             <rect
               key={`shadow - ${rIndex},${cIndex}`}
               className='aShadow'
@@ -75,7 +75,7 @@ const Maze = ({ maze }) => {
   const createObjects = () => {
     return maze.maze.map((row, rIndex) => {
       return row.map((item, cIndex) => {
-        if (item === "Agent") {
+        if (item.type === "Agent") {
           return (
             <circle
               key={`agent - ${rIndex},${cIndex}`}
@@ -85,7 +85,7 @@ const Maze = ({ maze }) => {
               r='15'
             />
           );
-        } else if (item === "Goal") {
+        } else if (item.type === "Goal") {
           return (
             <circle
               key={`goal - ${rIndex},${cIndex}`}
@@ -105,7 +105,7 @@ const Maze = ({ maze }) => {
   const createEmptyNodes = () => {
     return maze.maze.map((row, rIndex) => {
       return row.map((item, cIndex) => {
-        if (item === "Empty") {
+        if (item.type === "Empty") {
           return (
             <circle
               key={`empty - ${rIndex},${cIndex}`}
