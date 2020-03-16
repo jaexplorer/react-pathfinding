@@ -1,0 +1,144 @@
+.expandTop {
+  position: absolute;
+  top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .button {
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    font-size: 1.5rem;
+    cursor: pointer;
+    left: 2rem;
+    position: relative;
+  }
+}
+.expandRight {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 2rem;
+
+  .button {
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    bottom: 2rem;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+.expandBottom {
+  position: absolute;
+  bottom: 4.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .button {
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    left: 2rem;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+.expandLeft {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 2rem;
+  .button {
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    bottom: 2rem;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+
+.subtractTop {
+  position: absolute;
+  top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .button {
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    right: 2rem;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+.subtractRight {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 2rem;
+  .button {
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    top: 2rem;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+.subtractBottom {
+  position: absolute;
+  bottom: 4.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .button {
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    right: 2rem;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}
+.subtractLeft {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 2rem;
+
+  .button {
+    user-select: none;
+    position: relative;
+    z-index: 3;
+    top: 2rem;
+    font-weight: bold;
+    color: white;
+    opacity: 0.7;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}

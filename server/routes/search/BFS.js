@@ -1,5 +1,10 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
+import directions from "../../utils/directions";
+import isTraversable from "../../utils/isTraversable";
+import backtrace from "../../utils/backtrace";
+import calculateCosts from "../../utils/calculateCosts";
+import fetchGoals from "../../utils/fetchGoals";
 
 // BFS Endpoint
 router.post("/", (req, res) => {
@@ -7,48 +12,29 @@ router.post("/", (req, res) => {
   let start = req.body.start;
   let path = [];
 
-  maze[start.y][start.x].visited = true; // TODO: Need to do a check if start === end
+  maze = calculateCosts(maze, fetchGoals(maze), start);
+
+  maze[start.y][start.x].visited = true;
   path.push(start);
 
   const hasPathToEnd = () => {
-    const shifts = [
-      { y: -1, x: 0 }, // Going Up
-      { y: 0, x: 1 }, // Going Right
-      { y: 1, x: 0 }, // Going Down
-      { y: 0, x: -1 } // Going Left
-    ];
-
     while (path.length) {
       let currNode = path.shift();
       maze[currNode.y][currNode.x].visited = true;
 
-      for (const shift of shifts) {
-        let next = { y: currNode.y + shift.y, x: currNode.x + shift.x };
+      for (const direction of directions) {
+        let next = {
+          y: currNode.y + direction.y,
+          x: currNode.x + direction.x,
+          direction: direction.direction
+        };
 
-        if (
-          next.y >= 0 &&
-          next.y < maze.length &&
-          next.x >= 0 &&
-          next.x < maze[0].length &&
-          maze[next.y][next.x].visited === true
-        ) {
-          continue;
-        } else if (
-          next.y >= 0 &&
-          next.y < maze.length &&
-          next.x >= 0 &&
-          next.x < maze[0].length &&
-          (maze[next.y][next.x].type === "Empty" ||
-            maze[next.y][next.x].type === "Goal")
-        ) {
+        if (isTraversable(maze, next)) {
+          if (maze[next.y][next.x].visited === true) {
+            continue;
+          }
           if (maze[next.y][next.x].type === "Goal") {
-            next.parent = currNode;
-            path = [{ y: next.y, x: next.x }];
-            while (next.parent) {
-              next = next.parent;
-              path.push({ y: next.y, x: next.x });
-            }
-            path.reverse();
+            path = backtrace(next, currNode);
             return true;
           }
           next.parent = currNode;
@@ -58,9 +44,15 @@ router.post("/", (req, res) => {
       }
     }
   };
-  hasPathToEnd();
+  if (!hasPathToEnd()) {
+    path.pop();
+  }
 
-  res.send(path);
+  res.send({
+    path: path,
+    method: "Breadth First Search",
+    nodes: maze.length * maze[0].length
+  });
 });
 
-module.exports = router;
+export default router;

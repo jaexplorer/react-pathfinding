@@ -1,7 +1,7 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const fs = require("fs");
-const costs = require("../utils/costs");
+import fs from "fs";
+import calculateCosts from "../utils/calculateCosts";
 
 // Upload Endpoint
 router.post("/", (req, res) => {
@@ -33,7 +33,7 @@ router.post("/", (req, res) => {
     goals.forEach((goal, index) => {
       let goalX = parseInt(goal.replace(/[\(\)']+/g, "").split(",")[0]);
       let goalY = parseInt(goal.replace(/[\(\)']+/g, "").split(",")[1]);
-      goals[index] = { goalY, goalX };
+      goals[index] = { y: goalY, x: goalX };
     });
 
     // Construct Map and fill with empty nodes
@@ -59,7 +59,7 @@ router.post("/", (req, res) => {
 
     // Place Goals on map
     goals.forEach(goal => {
-      myArray[goal.goalY][goal.goalX].type = "Goal";
+      myArray[goal.y][goal.x].type = "Goal";
     });
 
     // Place Walls (Gaps) on map
@@ -76,12 +76,13 @@ router.post("/", (req, res) => {
       }
     });
 
-    // Calculate Node costs to Goals and Root
-    myArray = costs(myArray, goals, { y: agentY, x: agentX });
-
     // Send back the constructed maze
-    res.send({ maze: myArray, start: { y: agentY, x: agentX } });
+    res.send({
+      maze: myArray,
+      start: { y: agentY, x: agentX },
+      filename: myFile.name
+    });
   });
 });
 
-module.exports = router;
+export default router;

@@ -1,5 +1,10 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
+import directions from "../../utils/directions";
+import isTraversable from "../../utils/isTraversable";
+import backtrace from "../../utils/backtrace";
+import calculateCosts from "../../utils/calculateCosts";
+import fetchGoals from "../../utils/fetchGoals";
 
 // AS Endpoint
 router.post("/", (req, res) => {
@@ -7,75 +12,67 @@ router.post("/", (req, res) => {
   let start = req.body.start;
   let path = [];
 
-  maze[start.y][start.x].visited = true; // TODO: Need to do a check if start === end
+  maze = calculateCosts(maze, fetchGoals(maze), start);
+
+  maze[start.y][start.x].visited = true;
   path.push(start);
+  try {
+    const hasPathToEnd = () => {
+      while (path.length) {
+        let currNode = path.shift();
+        maze[currNode.y][currNode.x].visited = true;
 
-  const hasPathToEnd = () => {
-    const shifts = [
-      { y: -1, x: 0 }, // Going Up
-      { y: 0, x: 1 }, // Going Right
-      { y: 1, x: 0 }, // Going Down
-      { y: 0, x: -1 } // Going Left
-    ];
-
-    while (path.length) {
-      let currNode = path.shift();
-      maze[currNode.y][currNode.x].visited = true;
-
-      neighbours = [];
-      for (const shift of shifts) {
-        if (
-          currNode.y + shift.y >= 0 &&
-          currNode.y + shift.y < maze.length &&
-          currNode.x + shift.x >= 0 &&
-          currNode.x + shift.x < maze[0].length &&
-          maze[currNode.y + shift.y][currNode.x + shift.x].visited === true
-        ) {
-          continue;
-        } else if (
-          currNode.y + shift.y >= 0 &&
-          currNode.y + shift.y < maze.length &&
-          currNode.x + shift.x >= 0 &&
-          currNode.x + shift.x < maze[0].length &&
-          (maze[currNode.y + shift.y][currNode.x + shift.x].type === "Empty" ||
-            maze[currNode.y + shift.y][currNode.x + shift.x].type === "Goal")
-        ) {
-          try {
+        let neighbours = [];
+        for (const direction of directions) {
+          let next = {
+            y: currNode.y + direction.y,
+            x: currNode.x + direction.x
+          };
+          if (isTraversable(maze, next)) {
+            if (maze[next.y][next.x].visited === true) {
+              continue;
+            }
             neighbours.push({
-              y: currNode.y + shift.y,
-              x: currNode.x + shift.x,
-              endCost: maze[currNode.y + shift.y][currNode.x + shift.x].endCost,
-              startCost:
-                maze[currNode.y + shift.y][currNode.x + shift.x].startCost
+              y: next.y,
+              x: next.x,
+              endCost: maze[next.y][next.x].endCost,
+              startCost: maze[next.y][next.x].startCost,
+              direction: direction.direction
             });
-          } catch (err) {}
+          }
         }
-      }
 
-      neighbours.sort(
-        // prettier-ignore
-        (a, b) => (a.endCost - a.startCost) - (b.endCost - b.startCost)
-      );
+        neighbours.sort(
+          // prettier-ignore
+          (a, b) => (a.endCost - a.startCost) - (b.endCost - b.startCost)
+        );
 
-      if (maze[neighbours[0].y][neighbours[0].x].type === "Goal") {
+        if (maze[neighbours[0].y][neighbours[0].x].type === "Goal") {
+          path = backtrace(neighbours[0], currNode);
+          return true;
+        }
+
         neighbours[0].parent = currNode;
-        path = [{ y: neighbours[0].y, x: neighbours[0].x }];
-        while (neighbours[0].parent) {
-          neighbours[0] = neighbours[0].parent;
-          path.push({ y: neighbours[0].y, x: neighbours[0].x });
-        }
-        path.reverse();
-        return true;
+        path.push(neighbours[0]);
+        maze[neighbours[0].y][neighbours[0].x].visited = true;
       }
-
-      neighbours[0].parent = currNode;
-      path.push(neighbours[0]);
-      maze[neighbours[0].y][neighbours[0].x].visited = true;
+    };
+    if (!hasPathToEnd()) {
+      path.pop();
     }
-  };
-  hasPathToEnd();
+  } catch (err) {
+    res.send({
+      path: path,
+      method: "A Star",
+      nodes: maze.length * maze[0].length
+    });
+  }
 
-  res.send(path);
+  res.send({
+    path: path,
+    method: "A Star",
+    nodes: maze.length * maze[0].length
+  });
 });
 
-module.exports = router;
+export default router;

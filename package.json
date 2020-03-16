@@ -6,7 +6,7 @@
     "node": "10.x"
   },
   "scripts": {
-    "start": "node server",
+    "start": "babel-node server",
     "build": "cd client/ && npm install && npm run build",
     "myServer": "nodemon run start",
     "myClient": "cd client/ && npm start",
@@ -18,7 +18,10 @@
   ],
   "dependencies": {
     "express": "^4.16.4",
-    "express-fileupload": "1.1.4"
+    "express-fileupload": "1.1.4",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1"
   },
   "devDependencies": {
     "concurrently": "^4.1.1",

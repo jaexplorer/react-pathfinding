@@ -1,126 +1,32 @@
-import React, { Fragment, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Legend from "../legend/Legend";
 import Buttons from "../buttons/Buttons";
+import Output from "../output/Output";
+import CreateEmptyNodes from "./components/CreateEmptyNodes";
+import CreateMaze from "./components/CreateMaze";
+import CreateObjects from "./components/CreateObjects";
+import CreatePath from "./components/CreatePath";
+import CreateShadows from "./components/CreateShadows";
+import ExpandButtons from "./utils/ExpandButtons";
+import SubtractButtons from "./utils/SubtractButtons";
+import Dropdown from "./utils/Dropdown";
 
-const Maze = ({ maze }) => {
+const Maze = ({ maze, updateMaze }) => {
   const [path, setPath] = useState(false);
+  const [createDropdown, setCreateDropdown] = useState(false);
 
   const updatePath = data => {
     setPath(data);
+    console.log(data);
   };
 
-  const createPath = () => {
-    let prevNode = path[0];
-    return path.map((node, index) => {
-      const drawnPath = (
-        <Fragment>
-          <line
-            key={`line - ${index}`}
-            className='aLine'
-            x1={`${prevNode.x * 90 + 50}`}
-            y1={`${prevNode.y * 90 + 50}`}
-            x2={`${node.x * 90 + 50}`}
-            y2={`${node.y * 90 + 50}`}
-          />
-          <circle
-            key={`circle - ${index}`}
-            className='aPath'
-            cy={`${node.y * 90 + 50}`}
-            cx={`${node.x * 90 + 50}`}
-            r={`${index === 0 || index === path.length - 1 ? "20" : "15"}`}
-          />
-        </Fragment>
-      );
-      prevNode = node;
-      return drawnPath;
-    });
+  const updateDropdown = data => {
+    setCreateDropdown(data);
   };
 
-  const createMaze = () => {
-    return maze.maze.map((row, rIndex) => {
-      return row.map(
-        (item, cIndex) =>
-          item.type !== "Wall" && (
-            <rect
-              key={`wall - ${rIndex},${cIndex}`}
-              className='aRect'
-              y={`${rIndex * 90}`}
-              x={`${cIndex * 90}`}
-              width='100'
-              height='100'
-            />
-          )
-      );
-    });
-  };
-
-  const createShadows = () => {
-    return maze.maze.map((row, rIndex) => {
-      return row.map(
-        (item, cIndex) =>
-          item.type !== "Wall" && (
-            <rect
-              key={`shadow - ${rIndex},${cIndex}`}
-              className='aShadow'
-              y={`${rIndex * 90 + 10}`}
-              x={`${cIndex * 90}`}
-              width='100'
-              height='100'
-            />
-          )
-      );
-    });
-  };
-
-  const createObjects = () => {
-    return maze.maze.map((row, rIndex) => {
-      return row.map((item, cIndex) => {
-        if (item.type === "Agent") {
-          return (
-            <circle
-              key={`agent - ${rIndex},${cIndex}`}
-              className='aAgent'
-              cy={`${rIndex * 90 + 50}`}
-              cx={`${cIndex * 90 + 50}`}
-              r='15'
-            />
-          );
-        } else if (item.type === "Goal") {
-          return (
-            <circle
-              key={`goal - ${rIndex},${cIndex}`}
-              className='aGoal'
-              cy={`${rIndex * 90 + 50}`}
-              cx={`${cIndex * 90 + 50}`}
-              r='15'
-            />
-          );
-        } else {
-          return null;
-        }
-      });
-    });
-  };
-
-  const createEmptyNodes = () => {
-    return maze.maze.map((row, rIndex) => {
-      return row.map((item, cIndex) => {
-        if (item.type === "Empty") {
-          return (
-            <circle
-              key={`empty - ${rIndex},${cIndex}`}
-              className='empty'
-              cy={`${rIndex * 90 + 50}`}
-              cx={`${cIndex * 90 + 50}`}
-              r='15'
-            />
-          );
-        } else {
-          return null;
-        }
-      });
-    });
-  };
+  useEffect(() => {
+    setPath(false);
+  }, [maze]);
 
   return (
     <div className='maze-container'>
@@ -131,8 +37,10 @@ const Maze = ({ maze }) => {
       <Legend />
       <div className='maze'>
         <svg
-          viewBox={`0 0 ${maze.maze[0].length * 100 - 100} ${maze.maze.length *
-            100}`}
+          viewBox={`0 0 ${100 + (maze.maze[0].length - 1) * 90} ${110 +
+            (maze.maze.length - 1) * 90}`}
+          width={100 + (maze.maze[0].length - 1) * 90}
+          height={110 + (maze.maze.length - 1) * 90}
         >
           <defs>
             <filter id='goo'>
@@ -154,16 +62,39 @@ const Maze = ({ maze }) => {
             </filter>
           </defs>
           <g id='shadows' filter='url(#goo)'>
-            {createShadows()}
+            <CreateShadows maze={maze} />
           </g>
           <g id='map' filter='url(#goo)'>
-            {createMaze()}
+            <CreateMaze
+              maze={maze}
+              updateMaze={updateMaze}
+              updateDropdown={updateDropdown}
+            />
           </g>
-          {createEmptyNodes()}
-          {path && createPath()}
-          {createObjects()}
+          <CreateEmptyNodes
+            maze={maze}
+            updateMaze={updateMaze}
+            updateDropdown={updateDropdown}
+          />
+          {path && <CreatePath path={path} />}
+          <CreateObjects
+            maze={maze}
+            updateMaze={updateMaze}
+            updateDropdown={updateDropdown}
+          />
         </svg>
+        <ExpandButtons maze={maze} updateMaze={updateMaze} />
+        <SubtractButtons maze={maze} updateMaze={updateMaze} />
+        {
+          <Dropdown
+            maze={maze}
+            createDropdown={createDropdown}
+            updateMaze={updateMaze}
+            updateDropdown={updateDropdown}
+          />
+        }
       </div>
+      <Output maze={maze} path={path} />
       <Buttons maze={maze} updatePath={updatePath} />
     </div>
   );

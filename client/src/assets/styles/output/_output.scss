@@ -1,0 +1,25 @@
+.output-container {
+  margin-top: -2.5rem;
+  position: relative;
+  background: rgb(57, 55, 92);
+  border-radius: 20px;
+  max-width: 1000px;
+  width: 100%;
+  padding: 2rem;
+  overflow: scroll;
+  color: white;
+  font-weight: bold;
+  user-select: none;
+
+  @media screen and (max-width: 699px) {
+    margin-top: 2rem;
+  }
+
+  .output {
+    user-select: none;
+    white-space: pre-wrap;
+    font-weight: normal;
+    margin-top: 0.2rem;
+    line-height: 1.3;
+  }
+}

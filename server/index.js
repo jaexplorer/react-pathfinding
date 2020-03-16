@@ -1,6 +1,11 @@
-const express = require("express");
-const fileUpload = require("express-fileupload");
-const path = require("path");
+import express from "express";
+import fileUpload from "express-fileupload";
+import path from "path";
+import upload from "./routes/upload";
+import DFS from "./routes/search/DFS";
+import BFS from "./routes/search/BFS";
+import GBFS from "./routes/search/GBFS";
+import AS from "./routes/search/AS";
 
 const app = express();
 
@@ -9,11 +14,11 @@ app.use(express.static("uploads"));
 app.use(express.json());
 
 app.use(fileUpload());
-app.use("/api/upload", require("./routes/upload"));
-app.use("/api/search/DFS", require("./routes/search/DFS"));
-app.use("/api/search/BFS", require("./routes/search/BFS"));
-app.use("/api/search/GBFS", require("./routes/search/GBFS"));
-app.use("/api/search/AS", require("./routes/search/AS"));
+app.use("/api/upload", upload);
+app.use("/api/search/DFS", DFS);
+app.use("/api/search/BFS", BFS);
+app.use("/api/search/GBFS", GBFS);
+app.use("/api/search/AS", AS);
 app.get("*", function(request, response) {
   response.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
