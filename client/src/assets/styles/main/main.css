@@ -107,6 +107,15 @@ select:focus {
   transition: all 0.8s cubic-bezier(0.4, 0.01, 0, 1.38) 1.6s;
 }
 
+.file-upload-container.error::before {
+  -webkit-transition-timing-function: ease;
+          transition-timing-function: ease;
+  -webkit-transition-delay: 1s;
+          transition-delay: 1s;
+  -webkit-box-shadow: 0 0px 0 2500px #7c3535 !important;
+          box-shadow: 0 0px 0 2500px #7c3535 !important;
+}
+
 .file-upload-container.uploaded {
   -webkit-transition-delay: 3s;
           transition-delay: 3s;
@@ -123,10 +132,50 @@ select:focus {
 
 .file-upload-container .status {
   position: absolute;
-  margin-top: -125px;
+  margin-top: -130px;
   z-index: 5;
   font-size: 16pt;
   color: #7d7d7d;
+}
+
+.file-upload-container .status .error-container {
+  background: white;
+  border-radius: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.2s cubic-bezier(0.4, 0.01, 0, 1.38) 2s;
+  transition: all 0.2s cubic-bezier(0.4, 0.01, 0, 1.38) 2s;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+}
+
+.file-upload-container .status .error-container.error {
+  opacity: 1;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+.file-upload-container .status .error-container .error-message {
+  padding: 1rem;
+  height: 2rem;
+}
+
+.file-upload-container .status .error-container .error-action {
+  background: #e66565;
+  width: 2rem;
+  height: 2rem;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.file-upload-container .status .error-container .error-action img {
+  width: 100%;
 }
 
 .file-upload-container .button-container {
@@ -142,6 +191,11 @@ select:focus {
 .file-upload-container .button-container:hover {
   width: 180px;
   height: 180px;
+}
+
+.file-upload-container .button-container.error:hover {
+  width: 150px;
+  height: 150px;
 }
 
 .file-upload-container .button-container.uploaded {
@@ -192,7 +246,7 @@ select:focus {
 .file-upload-container .button-container .wipe {
   width: 100%;
   height: 150%;
-  background: #ffabc3;
+  background: #e6659b;
   position: relative;
   z-index: 2;
 }
@@ -238,6 +292,18 @@ select:focus {
   -webkit-transition-delay: 1.2s;
           transition-delay: 1.2s;
   opacity: 0;
+}
+
+.file-upload-container .button-container .expand.error {
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
+}
+
+.file-upload-container .button-container .expand.error::before {
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
+  -webkit-box-shadow: 0 0px 0 2500px #e66565;
+          box-shadow: 0 0px 0 2500px #e66565;
 }
 
 .file-upload-container .button-container .expand img {

@@ -3,16 +3,12 @@ const router = express.Router();
 import directions from "../../utils/directions";
 import isTraversable from "../../utils/isTraversable";
 import backtrace from "../../utils/backtrace";
-import calculateCosts from "../../utils/calculateCosts";
-import fetchGoals from "../../utils/fetchGoals";
 
 // BFS Endpoint
 router.post("/", (req, res) => {
   let maze = req.body.maze;
   let start = req.body.start;
   let path = [];
-
-  maze = calculateCosts(maze, fetchGoals(maze), start);
 
   maze[start.y][start.x].visited = true;
   path.push(start);

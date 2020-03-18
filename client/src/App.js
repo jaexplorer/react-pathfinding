@@ -11,11 +11,11 @@ function App() {
     console.log(data);
   };
 
-  useEffect(() => {
-    document.addEventListener("contextmenu", function(event) {
-      event.preventDefault();
-    });
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener("contextmenu", function(event) {
+  //     event.preventDefault();
+  //   });
+  // }, []);
 
   return (
     <div>
